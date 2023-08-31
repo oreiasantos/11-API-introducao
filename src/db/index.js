@@ -9,6 +9,15 @@ async function connect() {
   return pool.connect();
 }
 
+
+async function autenticarUsuario(email, senha) {
+  const client = await connect();
+  const query = "SELECT * FROM usuario WHERE email = $1 AND senha = $2";
+  const usuario = [email, senha];
+  const res = await client.query(query, usuario);
+  return res.rows[0];
+}
+
 async function selectUsuarios() {
   const client = await connect();
   const res = await client.query("SELECT * FROM usuario");
@@ -49,4 +58,4 @@ async function updateUsuario(data) {
 }
 
 //bd.js
-export { selectUsuarios, selectUsuario, insertUsuario, deleteUsuario, updateUsuario };
+export { selectUsuarios, selectUsuario, insertUsuario, deleteUsuario, updateUsuario, autenticarUsuario };
